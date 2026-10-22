@@ -1,0 +1,10 @@
+﻿/node_modules
+/.next
+/.next-dev
+/out
+/.vercel
+
+.env*
+!.env.example
+
+*.tsbuildinfo

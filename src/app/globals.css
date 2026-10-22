@@ -1,0 +1,62 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: var(--font-manrope), "Segoe UI", sans-serif;
+  --font-mono: var(--font-technical), ui-monospace, monospace;
+  --color-indigo-50: #E8E8DF;
+  --color-indigo-100: #E8E8DF;
+  --color-indigo-400: #9B91C7;
+  --color-indigo-600: #6656B5;
+  --color-indigo-700: #514294;
+  --color-slate-50: #F1F0E9;
+  --color-slate-100: #E8E8DF;
+  --color-slate-200: #D5D6CB;
+  --color-slate-300: #C5C7BB;
+  --color-slate-400: #85897F;
+  --color-slate-500: #65695F;
+  --color-slate-600: #53574E;
+  --color-slate-700: #3A3D35;
+  --color-slate-900: #20221C;
+  --color-white: #FAF9F4;
+  --color-blue-50: #E8E8DF;
+  --color-blue-700: #53574E;
+  --color-violet-50: #EEEAF7;
+  --color-violet-700: #514294;
+  --color-amber-50: #F3EBDD;
+  --color-amber-600: #956013;
+  --color-amber-700: #79500F;
+  --color-emerald-50: #E5F0E8;
+  --color-emerald-700: #26784D;
+  --color-rose-50: #F5E7E4;
+  --color-rose-700: #B33D3A;
+  --color-orange-50: #F3EBDD;
+  --color-orange-700: #79500F;
+}
+
+:root {
+  color-scheme: light;
+  --background: #F1F0E9;
+  --surface: #FAF9F4;
+  --raised: #E8E8DF;
+  --foreground: #20221C;
+  --secondary: #65695F;
+  --border: #D5D6CB;
+  --accent: #C1E944;
+  --accent-ink: #20221C;
+  --accent-hover: #B1D83B;
+  --secondary-accent: #6656B5;
+  --success: #26784D;
+  --warning: #956013;
+  --danger: #B33D3A;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; color: var(--foreground); background: var(--background); font-family: var(--font-manrope), "Segoe UI", sans-serif; font-size: 14px; -webkit-font-smoothing: antialiased; }
+button, input, select, textarea { font: inherit; }
+button, a, input, select, textarea { transition: color 160ms ease, background-color 160ms ease, border-color 160ms ease, box-shadow 160ms ease; }
+::selection { background: #DDF39F; color: #20221C; }
+:focus-visible { outline: 2px solid var(--secondary-accent); outline-offset: 2px; }
+a.bg-indigo-600, button.bg-indigo-600 { background-color: var(--accent); color: var(--accent-ink); }
+a.bg-indigo-600:hover, button.bg-indigo-600:hover { background-color: var(--accent-hover); }
+a.bg-\[\#365CF5\], button.bg-\[\#365CF5\] { background-color: var(--accent); color: var(--accent-ink); }
+a.bg-\[\#365CF5\]:hover, button.bg-\[\#365CF5\]:hover { background-color: var(--accent-hover); }

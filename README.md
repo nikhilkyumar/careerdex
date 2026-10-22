@@ -1,4 +1,7 @@
-﻿# CareerDex
+﻿live at - https://careerdex.vercel.app/
+
+
+# CareerDex
 
 CareerDex is a Next.js + Supabase job application tracker. The app uses Supabase Auth for sessions and PostgreSQL Row Level Security for per-user records.
 

@@ -57,7 +57,8 @@ async function readHtml(response: Response): Promise<string> {
 
 function imageFromHtml(html: string, pageUrl: URL): URL | null {
   const tags = html.slice(0, MAX_HTML_BYTES).match(/<(?:meta|link)\b[^>]*>/gi) || [];
-  const values: string[] = [];
+  const previews: string[] = [];
+  const icons: string[] = [];
   for (const tag of tags) {
     const attrs = new Map<string, string>();
     for (const match of tag.matchAll(/([\w:-]+)\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s>]+))/g)) {
@@ -66,15 +67,23 @@ function imageFromHtml(html: string, pageUrl: URL): URL | null {
     const property = (attrs.get("property") || attrs.get("name") || "").toLowerCase();
     const rel = (attrs.get("rel") || "").toLowerCase().split(/\s+/);
     const content = attrs.get("content") || attrs.get("href") || "";
-    if ((property === "og:image" || property === "og:image:secure_url" || property === "twitter:image" || property === "twitter:image:src" || rel.includes("image_src")) && content) values.push(content);
+    if ((property === "og:image" || property === "og:image:secure_url" || property === "twitter:image" || property === "twitter:image:src" || rel.includes("image_src")) && content) previews.push(content);
+    // Job listing pages often expose the company mark as the tab icon rather
+    // than as social preview metadata. Prefer larger touch icons when present.
+    if (rel.some((item) => item === "apple-touch-icon" || item === "apple-touch-icon-precomposed")) {
+      if (content) icons.unshift(content);
+    } else if ((rel.includes("icon") || rel.includes("shortcut")) && content) {
+      icons.push(content);
+    }
   }
-  for (const value of values) {
+  for (const value of [...previews, ...icons]) {
     try {
       const candidate = new URL(value, pageUrl);
       if (["http:", "https:"].includes(candidate.protocol) && !candidate.username && !candidate.password) return candidate;
     } catch { /* Ignore malformed metadata and try the next candidate. */ }
   }
-  return null;
+  // Many older listing sites do not declare the favicon in their HTML.
+  return new URL("/favicon.ico", pageUrl);
 }
 
 async function fetchPageImage(pageUrl: URL): Promise<URL | null> {

@@ -11,7 +11,7 @@ export default async function Home() {
   if (!user) redirect("/login");
   const today = new Date().toISOString().slice(0, 10);
   const [{ data: apps }, { data: profile }, { data: tasks }, { count: total }, { count: active }, { count: interviews }, { count: offers }, { count: overdue }] = await Promise.all([
-    supabase.from("applications").select("id,company_name,job_title,status,application_date,location,work_mode,job_url").is("archived_at", null).order("application_date", { ascending: false }).limit(5),
+    supabase.from("applications").select("id,company_name,job_title,status,application_date,location,work_mode,job_url").is("archived_at", null).order("created_at", { ascending: false }).limit(5),
     supabase.from("profiles").select("full_name,timezone").eq("id", user.id).maybeSingle(),
     supabase.from("tasks").select("id,title,due_at,application_id").is("completed_at", null).is("dismissed_at", null).order("due_at").limit(5),
     supabase.from("applications").select("id", { count: "exact", head: true }).is("archived_at", null),

@@ -1,7 +1,8 @@
 import Link from "next/link";
-import { signUp } from "@/app/auth-actions";
+import { signUp, signUpWithGoogle } from "@/app/auth-actions";
 import { Brand } from "@/components/shell";
 import { PublicInfoLinks } from "@/components/public-site";
+import { GoogleAuthButton } from "@/components/google-auth-button";
 
 const field = "mt-1.5 w-full rounded-md border border-[#D5D6CB] bg-[#FAF9F4] px-3 py-2.5 text-sm text-[#20221C] placeholder:text-[#85897F] focus:border-[#6656B5] focus:outline-none focus:ring-2 focus:ring-[#6656B5]/15";
 
@@ -13,11 +14,12 @@ export default async function Signup({ searchParams }: { searchParams: Promise<{
       <h1 className="mt-9 text-[28px] font-semibold tracking-[-0.04em] text-[#20221C]">Create your workspace</h1>
       <p className="mt-2 text-sm text-[#65695F]">A calmer way to organize your job search.</p>
       {sp.error && <p role="alert" className="mt-4 rounded-md border border-rose-200 bg-rose-50 p-3 text-sm text-rose-700">{sp.error}</p>}
-      <form action={signUp} className="mt-7 space-y-4">
+      <div className="mt-6"><GoogleAuthButton action={signUpWithGoogle} label="Sign up with Google" dividerPosition="after"/></div>
+      <form action={signUp} className="space-y-4">
         <label className="block text-sm font-medium text-[#303442]">Name<input name="full_name" autoComplete="name" className={field}/></label>
         <label className="block text-sm font-medium text-[#303442]">Email<input required type="email" name="email" autoComplete="email" className={field}/></label>
         <label className="block text-sm font-medium text-[#303442]">Password<input required minLength={8} type="password" name="password" autoComplete="new-password" className={field}/><span className="mt-1.5 block text-xs font-normal text-[#65695F]">Use at least 8 characters.</span></label>
-        <button className="w-full rounded-md bg-[#C1E944] py-2.5 text-sm font-semibold text-[#20221C] hover:bg-[#B1D83B]">Create account</button>
+        <button className="w-full cursor-pointer rounded-md bg-[#C1E944] py-2.5 text-sm font-semibold text-[#20221C] transition-colors hover:bg-[#B1D83B] active:bg-[#9FC52F]">Create account</button>
       </form>
       <p className="mt-7 border-t border-[#D5D6CB] pt-5 text-center text-sm text-[#65695F]">Already have an account? <Link href="/login" className="font-medium text-[#6656B5] hover:text-[#514294]">Sign in</Link></p>
       <div className="mt-4"><PublicInfoLinks/></div>

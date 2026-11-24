@@ -7,7 +7,7 @@ import { createClient } from "@/lib/supabase/client";
 const links = [
   { href: "/", label: "Overview", icon: LayoutDashboard },
   { href: "/applications", label: "Applications", icon: BriefcaseBusiness },
-  { href: "/reminders", label: "Follow-ups", icon: CalendarClock },
+  { href: "/follow-ups", label: "Follow-ups", icon: CalendarClock },
   { href: "/settings", label: "Settings", icon: Settings },
 ];
 
@@ -37,7 +37,7 @@ export function Shell({ children, name }: { children: React.ReactNode; name?: st
       <div className="mx-auto flex h-[62px] max-w-[1440px] items-center justify-between px-4 sm:px-6 lg:px-8">
         <Brand />
         <nav aria-label="Main navigation" className="hidden h-full items-center gap-1 md:flex">{links.map(({ href, label, icon: Icon }) => <Link key={href} href={href} aria-current={active(href) ? "page" : undefined} className={`inline-flex h-9 items-center gap-2 rounded-md px-3 text-[13px] ${active(href) ? "bg-[#C1E944] font-semibold text-[#20221C]" : "text-[#65695F] hover:bg-[#E8E8DF] hover:text-[#20221C]"}`}><Icon size={16} strokeWidth={1.8}/>{label}</Link>)}</nav>
-        <div className="flex items-center gap-2 sm:gap-3"><Link href="/reminders" aria-label="Follow-ups" title="Follow-ups" className="grid h-9 w-9 place-items-center rounded-md text-[#65695F] hover:bg-[#E8E8DF]"><Bell size={17} strokeWidth={1.8}/></Link><span className="hidden max-w-36 truncate border-l border-[#D5D6CB] pl-3 text-[13px] text-[#65695F] sm:block">{name || "Your workspace"}</span><button onClick={signOut} title="Sign out" aria-label="Sign out" className="grid h-9 w-9 place-items-center rounded-md text-[#65695F] hover:bg-[#E8E8DF]"><LogOut size={17} strokeWidth={1.8}/></button></div>
+        <div className="flex items-center gap-2 sm:gap-3"><Link href="/follow-ups" aria-label="Follow-ups" title="Follow-ups" className="grid h-9 w-9 place-items-center rounded-md text-[#65695F] hover:bg-[#E8E8DF]"><Bell size={17} strokeWidth={1.8}/></Link><span className="hidden max-w-36 truncate border-l border-[#D5D6CB] pl-3 text-[13px] text-[#65695F] sm:block">{name || "Your workspace"}</span><button onClick={signOut} title="Sign out" aria-label="Sign out" className="grid h-9 w-9 place-items-center rounded-md text-[#65695F] hover:bg-[#E8E8DF]"><LogOut size={17} strokeWidth={1.8}/></button></div>
       </div>
     </header>
     <main className="mx-auto min-h-[calc(100vh-112px)] max-w-[1440px] px-4 pb-24 pt-7 sm:px-6 md:pb-10 md:pt-9 lg:px-8">{children}</main>

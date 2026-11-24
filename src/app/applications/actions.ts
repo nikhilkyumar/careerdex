@@ -145,7 +145,7 @@ const applicationSchema = z
 /*
  * Create or update an application.
  */
-export async function saveApplication(formData: FormData) {
+async function saveApplicationImpl(formData: FormData) {
   const parsed = applicationSchema.safeParse(
     Object.fromEntries(formData.entries())
   );
@@ -160,7 +160,7 @@ export async function saveApplication(formData: FormData) {
     console.error("Application validation errors:", errors);
 
     // During development, include the field errors in the thrown message.
-    throw new Error(`Please check the form: ${errors.join("; ")}`);
+    return { error: `Please check the form: ${errors.join("; ")}` };
   }
 
   const d = parsed.data;
@@ -171,9 +171,7 @@ export async function saveApplication(formData: FormData) {
     data: { user },
   } = await supabase.auth.getUser();
 
-  if (!user) {
-    redirect("/login");
-  }
+  if (!user) return { error: "Sign in to save your application." };
 
   const id = String(formData.get("id") || "");
 
@@ -214,11 +212,11 @@ export async function saveApplication(formData: FormData) {
       .maybeSingle();
 
     if (previousError) {
-      throw new Error(previousError.message);
+      return { error: "We couldn’t load this application. Your entries are still here; please try again." };
     }
 
     if (!previous) {
-      throw new Error("Application not found or access denied.");
+      return { error: "Application not found or access denied. Your entries are still here." };
     }
 
     const statusChanged = previous.status !== d.status;
@@ -237,11 +235,11 @@ export async function saveApplication(formData: FormData) {
       .maybeSingle();
 
     if (error) {
-      throw new Error(error.message);
+      return { error: "We couldn’t save your changes. Your entries are still here; please try again." };
     }
 
     if (!updated) {
-      throw new Error("Application could not be updated.");
+      return { error: "Application could not be updated. Your entries are still here; please try again." };
     }
 
     if (statusChanged) {
@@ -263,6 +261,7 @@ export async function saveApplication(formData: FormData) {
     revalidatePath(`/applications/${id}`);
     revalidatePath("/");
     revalidatePath("/applications");
+    revalidatePath("/follow-ups");
 
     redirect(`/applications/${id}`);
   }
@@ -278,7 +277,7 @@ export async function saveApplication(formData: FormData) {
     .single();
 
   if (error) {
-    throw new Error(error.message);
+    return { error: "We couldn’t save this application. Your entries are still here; please try again." };
   }
 
   /* Record the initial application event */
@@ -300,8 +299,20 @@ export async function saveApplication(formData: FormData) {
 
   revalidatePath("/");
   revalidatePath("/applications");
+  revalidatePath("/follow-ups");
 
   redirect("/applications");
+}
+
+export async function saveApplication(_previousState: { error?: string }, formData: FormData) {
+  try {
+    return await saveApplicationImpl(formData);
+  } catch (error) {
+    const digest = (error as { digest?: string })?.digest;
+    if (digest?.startsWith("NEXT_REDIRECT")) throw error;
+    console.error("Application save failed:", error);
+    return { error: "Something went wrong while saving. Your entries are still here; please try again." };
+  }
 }
 
 /*
@@ -386,6 +397,7 @@ export async function changeStatus(formData: FormData) {
 
   revalidatePath("/");
   revalidatePath("/applications");
+  revalidatePath("/follow-ups");
   revalidatePath(`/applications/${id}`);
 }
 
@@ -429,6 +441,7 @@ export async function archiveApplication(formData: FormData) {
 
   revalidatePath("/");
   revalidatePath("/applications");
+  revalidatePath("/follow-ups");
 
   redirect("/applications");
 }
@@ -456,5 +469,6 @@ export async function deleteApplication(formData: FormData) {
   revalidatePath("/");
   revalidatePath("/applications");
   revalidatePath(`/applications/${id}`);
+  revalidatePath("/follow-ups");
   redirect("/applications");
 }

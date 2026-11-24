@@ -16,7 +16,7 @@ export async function completeTask(formData: FormData) {
   const { supabase, user } = await requireUser();
   const { error } = await supabase.from("tasks").update({ completed_at: new Date().toISOString() }).eq("id", id).eq("user_id", user.id);
   if (error) throw new Error("Could not complete this task.");
-  revalidatePath("/"); revalidatePath("/reminders");
+  revalidatePath("/"); revalidatePath("/follow-ups");
 }
 
 export async function postponeTask(formData: FormData) {
@@ -26,7 +26,7 @@ export async function postponeTask(formData: FormData) {
   const { supabase, user } = await requireUser();
   const { error } = await supabase.from("tasks").update({ due_at: dueAt }).eq("id", id).eq("user_id", user.id);
   if (error) throw new Error("Could not postpone this task.");
-  revalidatePath("/"); revalidatePath("/reminders");
+  revalidatePath("/"); revalidatePath("/follow-ups");
 }
 
 export async function completeFollowUp(formData: FormData) {
@@ -36,7 +36,7 @@ export async function completeFollowUp(formData: FormData) {
   const { data, error } = await supabase.from("applications").update({ follow_up_date: null }).eq("id", id).eq("user_id", user.id).select("id").maybeSingle();
   if (error || !data) throw new Error("Could not complete this follow-up.");
   await supabase.from("application_events").insert({ user_id: user.id, application_id: id, event_type: "follow_up_completed", note: "Follow-up marked complete" });
-  revalidatePath("/"); revalidatePath("/reminders"); revalidatePath("/applications");
+  revalidatePath("/"); revalidatePath("/follow-ups"); revalidatePath("/applications");
 }
 
 export async function postponeFollowUp(formData: FormData) {
@@ -46,5 +46,5 @@ export async function postponeFollowUp(formData: FormData) {
   const { supabase, user } = await requireUser();
   const { error } = await supabase.from("applications").update({ follow_up_date: date }).eq("id", id).eq("user_id", user.id);
   if (error) throw new Error("Could not postpone this follow-up.");
-  revalidatePath("/"); revalidatePath("/reminders"); revalidatePath("/applications");
+  revalidatePath("/"); revalidatePath("/follow-ups"); revalidatePath("/applications");
 }

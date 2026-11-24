@@ -1,14 +1,11 @@
-﻿live at - https://careerdex.vercel.app/
-
-
-# CareerDex
+﻿# CareerDex
 
 CareerDex is a Next.js + Supabase job application tracker. The app uses Supabase Auth for sessions and PostgreSQL Row Level Security for per-user records.
 
 ## Run locally
 
 1. Create a Supabase project and apply the SQL files in `supabase/migrations` in order (or link the Supabase CLI and run `supabase db push`). The second migration adds indexes for faster application search.
-2. Copy `.env.example` to `.env.local` and set `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, and optionally `NEXT_PUBLIC_SITE_URL` to your local or production origin.
+2. Copy `.env.example` to `.env.local` and set the Supabase URL and anon key, the site origin, and any contact details you want shown on the Contact page.
 3. In Supabase Auth, configure the site URL and allow the auth callback at `/auth/callback`.
 4. Install packages with `npm install`, then run `npm run dev`.
 
@@ -20,7 +17,7 @@ CareerDex is a Next.js + Supabase job application tracker. The app uses Supabase
 - Per-user PostgreSQL RLS and private resume storage bucket policies.
 - Account preferences for future application defaults and display choices.
 
-The configured Supabase project is required for persistent use. No database service-role key is used in the browser. Configure Vercel environment variables with the same public project URL and anon key before deployment. Production hosting and Supabase availability depend on the selected plans; scheduled processing is not used by this MVP.
+The configured Supabase project is required for persistent use. Do not put a Supabase service-role key in this app; the browser uses only the anon key and database row-level security. Configure the same environment variables in your hosting provider before deployment. Production hosting and Supabase availability depend on the selected plans; scheduled processing is not used by this MVP.
 
 ## Layout
 

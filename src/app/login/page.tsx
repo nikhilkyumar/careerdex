@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { signIn, resetPassword } from "@/app/auth-actions";
 import { Brand } from "@/components/shell";
+import { PublicInfoLinks } from "@/components/public-site";
 
 const field = "mt-1.5 w-full rounded-md border border-[#D5D6CB] bg-[#FAF9F4] px-3 py-2.5 text-sm text-[#20221C] placeholder:text-[#85897F] focus:border-[#6656B5] focus:outline-none focus:ring-2 focus:ring-[#6656B5]/15";
 
@@ -23,6 +24,7 @@ export default async function Login({ searchParams }: { searchParams: Promise<{ 
         <form action={resetPassword} className="mt-3 flex gap-2"><input required type="email" name="email" placeholder="Your account email" className={`min-w-0 flex-1 ${field}`}/><button className="rounded-md border border-[#D5D6CB] px-3 text-sm text-[#65695F] hover:bg-slate-50">Send link</button></form>
       </details>
       <p className="mt-7 border-t border-[#D5D6CB] pt-5 text-center text-sm text-[#65695F]">New to CareerDex? <Link href="/signup" className="font-medium text-[#6656B5] hover:text-[#514294]">Create an account</Link></p>
+      <div className="mt-4"><PublicInfoLinks/></div>
     </div>
   </main>;
 }

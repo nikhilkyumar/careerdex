@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { signUp } from "@/app/auth-actions";
 import { Brand } from "@/components/shell";
+import { PublicInfoLinks } from "@/components/public-site";
 
 const field = "mt-1.5 w-full rounded-md border border-[#D5D6CB] bg-[#FAF9F4] px-3 py-2.5 text-sm text-[#20221C] placeholder:text-[#85897F] focus:border-[#6656B5] focus:outline-none focus:ring-2 focus:ring-[#6656B5]/15";
 
@@ -19,6 +20,7 @@ export default async function Signup({ searchParams }: { searchParams: Promise<{
         <button className="w-full rounded-md bg-[#C1E944] py-2.5 text-sm font-semibold text-[#20221C] hover:bg-[#B1D83B]">Create account</button>
       </form>
       <p className="mt-7 border-t border-[#D5D6CB] pt-5 text-center text-sm text-[#65695F]">Already have an account? <Link href="/login" className="font-medium text-[#6656B5] hover:text-[#514294]">Sign in</Link></p>
+      <div className="mt-4"><PublicInfoLinks/></div>
     </div>
   </main>;
 }

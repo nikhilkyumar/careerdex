@@ -1,14 +1,14 @@
 import { ArrowUpRight, Bug, Github, Linkedin, Mail } from "lucide-react";
-import { Shell } from "@/components/shell";
+import { PublicFooter, PublicHeader } from "@/components/public-site";
 
-const EMAIL = "nikhilkumar.cout@gmail.com";
-const GITHUB = "nikhilkyumar";
-const LINKEDIN = "nikhilkyumar";
+const EMAIL = process.env.CONTACT_EMAIL;
+const GITHUB = process.env.CONTACT_GITHUB_USERNAME;
+const LINKEDIN = process.env.CONTACT_LINKEDIN_USERNAME;
 
 const contacts = [
-  { label: "Email", value: EMAIL, href: `mailto:${EMAIL}`, icon: Mail },
-  { label: "GitHub", value: GITHUB, href: `https://github.com/${GITHUB}`, icon: Github },
-  { label: "LinkedIn", value: LINKEDIN, href: `https://www.linkedin.com/in/${LINKEDIN}`, icon: Linkedin },
+  ...(EMAIL ? [{ label: "Email", value: EMAIL, href: `mailto:${EMAIL}`, icon: Mail }] : []),
+  ...(GITHUB ? [{ label: "GitHub", value: GITHUB, href: `https://github.com/${GITHUB}`, icon: Github }] : []),
+  ...(LINKEDIN ? [{ label: "LinkedIn", value: LINKEDIN, href: `https://www.linkedin.com/in/${LINKEDIN}`, icon: Linkedin }] : []),
 ];
 
 export const metadata = {
@@ -17,7 +17,7 @@ export const metadata = {
 };
 
 export default function ContactPage() {
-  return <Shell><div className="max-w-3xl">
+  return <div className="min-h-screen bg-[#F1F0E9] text-[#20221C]"><PublicHeader/><main className="mx-auto max-w-6xl px-5 py-14 sm:px-8 sm:py-20"><div className="max-w-3xl">
     <p className="font-mono text-xs uppercase tracking-[0.12em] text-[#65695F]">CAREERDEX / CONTACT</p>
     <h1 className="mt-4 font-[family-name:var(--font-editorial)] text-5xl font-normal tracking-tight text-[#20221C] sm:text-6xl">Let’s talk.</h1>
     <p className="mt-4 max-w-xl text-base leading-7 text-[#65695F]">Questions, feedback, or an idea to share? Choose the best way to reach me.</p>
@@ -30,9 +30,10 @@ export default function ContactPage() {
     </div>
 
     <div className="mt-8 flex flex-wrap gap-3">
-      <a href={`mailto:${EMAIL}`} className="inline-flex min-h-12 flex-1 items-center justify-center gap-2 rounded-lg bg-[#C1E944] px-5 text-base font-bold text-[#20221C] hover:bg-[#B1D83B] sm:flex-none"><Mail size={18}/>Contact me</a>
-      <a href={`https://github.com/${GITHUB}/careerdex/issues/new`} target="_blank" rel="noreferrer" className="inline-flex min-h-12 flex-1 items-center justify-center gap-2 rounded-lg border border-[#D5D6CB] bg-[#FAF9F4] px-5 text-base font-bold text-[#20221C] hover:bg-[#E8E8DF] sm:flex-none"><Bug size={18}/>Report an issue <ArrowUpRight size={16}/></a>
+      {EMAIL && <a href={`mailto:${EMAIL}`} className="inline-flex min-h-12 flex-1 items-center justify-center gap-2 rounded-lg bg-[#C1E944] px-5 text-base font-bold text-[#20221C] hover:bg-[#B1D83B] sm:flex-none"><Mail size={18}/>Contact me</a>}
+      {GITHUB && <a href={`https://github.com/${GITHUB}/careerdex/issues/new`} target="_blank" rel="noreferrer" className="inline-flex min-h-12 flex-1 items-center justify-center gap-2 rounded-lg border border-[#D5D6CB] bg-[#FAF9F4] px-5 text-base font-bold text-[#20221C] hover:bg-[#E8E8DF] sm:flex-none"><Bug size={18}/>Report an issue <ArrowUpRight size={16}/></a>}
     </div>
-    <p className="mt-4 text-xs text-[#65695F]">Issue reports open GitHub in a new tab.</p>
-  </div></Shell>;
+    {GITHUB && <p className="mt-4 text-xs text-[#65695F]">Issue reports open GitHub in a new tab.</p>}
+    {contacts.length === 0 && <p className="mt-8 rounded-lg bg-white p-4 text-sm text-[#65695F]">Contact options are not configured yet.</p>}
+  </div></main><PublicFooter/></div>;
 }
